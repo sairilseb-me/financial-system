@@ -24,6 +24,7 @@ return new class extends Migration
             $table->text('municipality');
             $table->string('province');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
