@@ -1,10 +1,14 @@
 <template>
     <div class="flex flex-column container">
-        <the-modal v-if="showAddModal" :title="title">
-            <template v-slot:addbody>
+        <the-modal v-if="showAddModal" :title="title" @addModalClose="showAddModalTrigger">
+            <template v-slot:addBody>
                 <div class="mb-3">
                     <label for="firstName" class="form-lable">First Name:</label>
                     <input type="text" name="" id="firstName" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="middleName" class="form-lable">Middle Name:</label>
+                    <input type="text" name="" id="middleName" class="form-control">
                 </div>
             </template>
         </the-modal>
@@ -62,15 +66,18 @@ export default {
     },
     setup() {
         let users = ref([]);
-        let title = ref('Add Client');
+        let title = ref('');
+        title.value = 'Add Client';
+        console.log(title.value);
         let showAddModal = ref(false);
         const userStore = useUsersStore();
+
         let loadUsers = () =>{
             userStore.loadUsers();
         }
 
         let showAddModalTrigger = ()=>{
-            showAddModal.value = !showAddModal.value
+            showAddModal.value = !showAddModal.value;
         }
 
         onMounted(()=>{
