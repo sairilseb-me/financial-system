@@ -4,7 +4,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="staticBackdropLabel">{{ title }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="closeModal"></button>
                 </div>
                 <div class="modal-body">
                    <slot name="addBody"></slot>
@@ -22,14 +22,20 @@
 import { ref } from 'vue';
 
 export default {
-    setup(props) {
+    emits: ['addModalClose'],
+    props:{
+        title: String,
+    }, 
+    setup(props, {emit}) {
         let title = ref(props.title);
         let closeModal = ()=>{
-            this.$emits('addModalClose', false);
+            emit('addModalClose');
         }
+
+
         return{
             closeModal, title,
         }
     },
-}
+};
 </script>
