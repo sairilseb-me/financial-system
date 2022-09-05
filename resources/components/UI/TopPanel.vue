@@ -15,7 +15,6 @@
 <style scoped>
     .bg-color{
         background-color: white;
-        height: 8vh;
     }
 
     button{
