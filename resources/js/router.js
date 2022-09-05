@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import TheDashboard from '../components/views/TheDashboard.vue';
-import TheUsers from '../components/views/TheUsers.vue';
+import TheClients from '../components/views/TheClients.vue';
 
 const routes = [
     {
@@ -9,9 +9,9 @@ const routes = [
         name: 'dashboard'
     },
     {
-        path: '/users',
-        component: TheUsers,
-        name: 'users'
+        path: '/clients',
+        component: TheClients,
+        name: 'clients'
     }
 ];
 
