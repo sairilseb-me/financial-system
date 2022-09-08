@@ -2,40 +2,20 @@
     <div class="modal show" style="display: block" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
+                
                 <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">{{ title }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="closeModal"></button>
+                    <h5 class="modal-title" id="staticBackdropLabel">
+                        <slot name="header"></slot>
+                    </h5>
                 </div>
                 <div class="modal-body">
-                   <slot name="addBody"></slot>
+                   <slot name="body"></slot>
                 </div>
+                <slot name="error"></slot>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" @click="closeModal">Close</button>
-                    <button type="button" class="btn btn-primary">Save</button>
+                    <slot name="footer"></slot>
                 </div>
             </div>
         </div>
     </div>
 </template>
-
-<script>
-import { ref } from 'vue';
-
-export default {
-    emits: ['addModalClose'],
-    props:{
-        title: String,
-    }, 
-    setup(props, {emit}) {
-        let title = ref(props.title);
-        let closeModal = ()=>{
-            emit('addModalClose');
-        }
-
-
-        return{
-            closeModal, title,
-        }
-    },
-};
-</script>

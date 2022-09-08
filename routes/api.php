@@ -21,4 +21,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::controller(ClientsController::class)->group(function(){
     Route::get('/clients', [ClientsController::class, 'index']);
+    Route::post('/clients/add', [ClientsController::class, 'create']);
+    Route::get('/clients/search/{lastname}', [ClientsController::class, 'show']);
 });
