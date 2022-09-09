@@ -5,6 +5,7 @@ const useUsersStore = defineStore('usersStore', {
     state: () =>{
         ({
             users: [],
+            user: {},
             isLoading: false,
             pagination: {},
          })
@@ -38,7 +39,7 @@ const useUsersStore = defineStore('usersStore', {
                 }else{
                     this.loadUsers();
                 }
-            }
+            },
         }
 });
 

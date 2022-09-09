@@ -17,8 +17,8 @@ const routes = [
     {
         path: '/clients/view',
         component: SpecificClient,
-        name: 'specific-client'
-        
+        name: 'specific-client',
+        params: true,
     }
 
 ];

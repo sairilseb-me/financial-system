@@ -10,8 +10,10 @@
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Special title treatment</h4>
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                            <h4 class="card-title">{{ userStore.user.first_name }} {{ userStore.user.middle_name }} {{ userStore.user.last_name }}</h4>
+                            <p>{{ userStore.user.gender }}</p>
+                            <p>{{ userStore.user.date_of_birth }}</p>
+                            <p>{{ userStore.user.barangay }} {{ userStore.user.municipality }} {{ userStore.user.province }}</p>
                             <a href="#" class="btn btn-primary">Go somewhere</a>
                         </div>
                     </div>
@@ -38,20 +40,34 @@
 
 <script>
 import useUserStore from '../../js/Store/UsersStore';
-import router from '../../js/router.js';
 
-import { onMounted } from 'vue';
+import {useRouter, useRoute } from 'vue-router';
+import { onMounted, onBeforeMount, onUpdated } from 'vue';
 export default {
     setup() {
         let userStore = useUserStore();
+        const router = useRouter();
+        const route = useRoute();
 
         let loadUserData = () =>{
-            axios.get(`http://127.0.0.1:8000/api/clients/view/${router.params.id}`)
+            console.log(route.params.id);
+            axios.get(`http://127.0.0.1:8000/api/clients/view/${route.params.id}`)
+            .then((response)=>{
+                if(response.data.status === 'success'){
+                    userStore.user = response.data.client;
+                }
+            })
         }
-
         return {
-            userStore,
+            userStore, loadUserData
         }
     },
+
+    beforeRouteEnter(to, from, next){
+        console.log('Before route enter');
+        next();
+    },
+
+    
 }
 </script>

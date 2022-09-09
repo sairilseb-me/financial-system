@@ -98,7 +98,7 @@
                         <td>{{ user.date_of_birth }}</td>
                         <td>{{ user.gender }}</td>
                         <td>{{ user.barangay }} {{ user.municipality }} {{ user.province }}</td>
-                        <td><button class="btn btn-warning btn-sm">View Details</button></td>
+                        <td><router-link class="btn btn-warning btn-sm" :to="{ name: 'specific-client', params: {id: user.id} }">View Details</router-link></td>
                     </tr>
                 </tbody>
             </table>
