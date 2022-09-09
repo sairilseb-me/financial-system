@@ -93,7 +93,7 @@
                     </tr>   
                 </thead>
                 <tbody>
-                    <tr v-for="user in users" :key="user.id">
+                    <tr v-for="user in userStore.users" :key="user.id">
                         <td>{{ user.first_name }} {{ user.middle_name }} {{ user.last_name }}</td>
                         <td>{{ user.date_of_birth }}</td>
                         <td>{{ user.gender }}</td>
@@ -102,14 +102,11 @@
                     </tr>
                 </tbody>
             </table>
-           
-            <div v-if="userStore.pagination">
-                <pagination>
+                <pagination v-if="showPagination">
                     <template v-slot:links>
-                        <li v-for="link, index in userStore.pagination.links" :key="index" class="page-item"><button class="page-link" :disabled="disableButton(link.url)" @click="paginatedClick(link.url)">{{ cleanNextPrevious(link.label) }}</button></li>
+                        <li v-for="link, index in pagData" :key="index" class="page-item"><button class="page-link" :disabled="disableButton(link.url)" @click="paginatedClick(link.url)">{{ cleanNextPrevious(link.label) }}</button></li>
                     </template>
                 </pagination>
-            </div>
         </div>
     </div>
 </template>
@@ -144,10 +141,10 @@ export default {
         let showAddModal = ref(false);
         const userStore = useUsersStore();
         let searchLastname = ref('');
+        let pagData = ref([]);
 
         let loadUsers = () => {
             userStore.loadUsers();
-            users.value = userStore.users;
         }
 
         let showAddModalTrigger = () => showAddModal.value = !showAddModal.value;
@@ -183,13 +180,15 @@ export default {
         let userSearch = () => {
             if(!userStore.isLoading){
                 userStore.searchUser(searchLastname.value);
-                users.value = userStore.users;
+                pagData.value = paginationData();
             }
         }
 
         onBeforeMount(()=>{
-            loadUsers(); 
-            users.value = userStore.users;
+            loadUsers();
+            showPagination();
+            pagData.value = paginationData();
+           
         });
 
         let cleanNextPrevious = ((txt)=>{
@@ -203,7 +202,6 @@ export default {
             axios.get(url)
             .then((response)=>{
                 userStore.users = response.data.data.data;
-                users.value = userStore.users;
                 userStore.pagination = response.data.data;
             })
         });
@@ -213,6 +211,21 @@ export default {
                 return true
             }
         });
+
+        let showPagination = () =>{
+            if(userStore.pagination !==  undefined){
+               if(userStore.users.length > 4){
+                return true
+               }
+            }
+            return false
+        }
+
+        let paginationData = () => {
+            if(userStore.pagination){
+                return userStore.pagination.links
+            }
+        }
         
         return {
             users, 
@@ -224,6 +237,7 @@ export default {
             success,
             inputError,
             searchLastname,
+            pagData,
             userSearch, 
             loadUsers, 
             showAddModalTrigger, 
@@ -232,6 +246,8 @@ export default {
             cleanNextPrevious,
             paginatedClick,
             disableButton,
+            showPagination,
+            paginationData,
         }
     },
 
