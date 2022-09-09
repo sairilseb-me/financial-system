@@ -59,4 +59,10 @@ class ClientsController extends Controller
        if($lastname !== '') return Client::where('last_name','LIKE', '%'.$lastname.'%')->paginate(5);
        return Client::paginate(5);
     }
+
+    public function edit($id){
+        $client = Client::find($id)->first();
+        if($client) return response()->json(['status'=>'success','client'=>$client]);
+        return response()->json(['status'=>'failed', 'message'=>'Failed to find client data.']);
+    }
 }
