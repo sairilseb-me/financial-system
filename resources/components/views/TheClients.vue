@@ -93,7 +93,7 @@
                     </tr>   
                 </thead>
                 <tbody>
-                    <tr v-for="user in users" :key="user.id">
+                    <tr v-for="user in userStore.users" :key="user.id">
                         <td>{{ user.first_name }} {{ user.middle_name }} {{ user.last_name }}</td>
                         <td>{{ user.date_of_birth }}</td>
                         <td>{{ user.gender }}</td>
@@ -147,7 +147,6 @@ export default {
 
         let loadUsers = () => {
             userStore.loadUsers();
-            users.value = userStore.users;
         }
 
         let showAddModalTrigger = () => showAddModal.value = !showAddModal.value;
@@ -183,7 +182,6 @@ export default {
         let userSearch = () => {
             if(!userStore.isLoading){
                 userStore.searchUser(searchLastname.value);
-                users.value = userStore.users;
             }
         }
 

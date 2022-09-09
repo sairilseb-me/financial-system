@@ -56,7 +56,7 @@ class ClientsController extends Controller
     }
 
     public function show($lastname){
-       if($lastname !== '') return Client::where('last_name','LIKE', '%'.$lastname.'%')->get();
-       return Client::all();
+       if($lastname !== '') return Client::where('last_name','LIKE', '%'.$lastname.'%')->paginate(5);
+       return Client::paginate(5);
     }
 }

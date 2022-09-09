@@ -27,8 +27,11 @@ const useUsersStore = defineStore('usersStore', {
                 if(payload !== '' && payload !== ' '){
                     this.isLoading = true
                     axios.get(`http://127.0.0.1:8000/api/clients/search/${payload}`)
-                    .then((response)=>{
-                        this.users = response.data;
+                    .then(({data})=>{
+                       
+                        this.users = data.data;
+                        this.pagination = data.data;
+                        
                     }).finally(()=>{
                         this.isLoading = false
                     })
