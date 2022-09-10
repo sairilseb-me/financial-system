@@ -1,6 +1,52 @@
 <template>
     <div class="container flex mt-3">
         <div>
+            <modal v-if="isEditUser">
+                <template v-slot:header>
+                    <h4>Edit Client</h4>
+                </template>
+                <template v-slot:body>
+                    <div class="mb-3">
+                    <label for="firstName" class="form-lable">First Name:</label>
+                    <input type="text" name="" id="firstName" class="form-control" v-model="user.first_name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="middleName" class="form-lable">Middle Name:</label>
+                        <input type="text" name="" id="middleName" class="form-control" v-model="user.middle_name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastName" class="form-lable">Last Name:</label>
+                        <input type="text" name="" id="lastName" class="form-control" v-model="user.last_name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="dateOfBirth" class="form-lable">Date of Birth:</label>
+                        <input type="date" name="" id="dateOfBirth" class="form-control" v-model="user.date_of_birth">
+                    </div>
+                    <div class="mb-3">
+                        <select name="" class="form-select" id="selectedGender">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="barangay" class="form-lable">Barangay:</label>
+                        <input type="text" name="" id="barangay" class="form-control" v-model="user.barangay">
+                    </div>
+                    <div class="mb-3">
+                        <label for="municipality" class="form-lable">Municipality:</label>
+                        <input type="text" name="" id="municipality" class="form-control" v-model="user.municipality">
+                    </div>
+                    <div class="mb-3">
+                        <label for="province" class="form-lable">Province:</label>
+                        <input type="text" name="" id="dateOfBirth" class="form-control" v-model="user.province">
+                    </div>
+                </template>
+                <template v-slot:footer>
+                    <button type="button" class="btn btn-secondary" @click="triggerEditModal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+                </template>
+
+            </modal>
             <div v-if="!userStore.user">
                 <div class="flex justify-content-center">
                     <p>No data for now.</p>
@@ -14,7 +60,18 @@
                             <p>{{ userStore.user.gender }}</p>
                             <p>{{ userStore.user.date_of_birth }}</p>
                             <p>{{ userStore.user.barangay }} {{ userStore.user.municipality }} {{ userStore.user.province }}</p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                            <div class="flex">
+                                <div class="row mt-1 justify-content-center">
+                                    <a href="#" class="btn btn-primary col-10">Add Assistance</a>
+                                </div>
+                                <div class="row mt-1 justify-content-center">
+                                    <a href="#" class="btn btn-warning col-10" @click="triggerEditModal">Edit Client Data</a>
+                                </div>
+                                <div class="row mt-1 justify-content-center">
+                                    <a href="#" class="btn btn-danger col-10">Delete Client Data</a>
+                                </div>
+                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -42,31 +99,46 @@
 import useUserStore from '../../js/Store/UsersStore';
 
 import {useRouter, useRoute } from 'vue-router';
-import { onMounted, onBeforeMount, onUpdated } from 'vue';
+import { onMounted, onBeforeMount, onUpdated, ref } from 'vue';
+import Modal from '../modal/TheModal.vue';
 export default {
+    components: {
+        'modal': Modal,
+    },  
     setup() {
         let userStore = useUserStore();
         const router = useRouter();
         const route = useRoute();
+        const isEditUser = ref(false);
+        const user = ref({});
 
         let loadUserData = () =>{
-            console.log(route.params.id);
             axios.get(`http://127.0.0.1:8000/api/clients/view/${route.params.id}`)
             .then((response)=>{
                 if(response.data.status === 'success'){
                     userStore.user = response.data.client;
+                    user.value = userStore.user;
                 }
             })
         }
+
+        let triggerEditModal = () =>{
+            isEditUser.value = !isEditUser.value;
+        }
+
+        onBeforeMount(()=>{
+            loadUserData();
+        })
         return {
-            userStore, loadUserData
+            userStore, 
+            isEditUser,
+            user,
+            loadUserData,
+            triggerEditModal,
         }
     },
 
-    beforeRouteEnter(to, from, next){
-        console.log('Before route enter');
-        next();
-    },
+   
 
     
 }

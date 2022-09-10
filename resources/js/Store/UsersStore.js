@@ -12,8 +12,10 @@ const useUsersStore = defineStore('usersStore', {
     },
     getters: {
         getUsers: (state) => {
-            console.log(state.users);
             return state.users;
+        },
+        getUser: (state) => {
+            return state.user;
         }
     },
     actions: {
