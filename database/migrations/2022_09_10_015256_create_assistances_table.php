@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('assistances', function (Blueprint $table) {
             $table->id();
             $table->uuid('client_id');
-            $table->foreign('id')->references('clients')->on('id');
+            $table->foreign('client_id')->references('id')->on('clients');
             $table->uuid('patient_id');
-            $table->foreign('id')->references('clients')->on('id');
+            $table->foreign('patient_id')->references('id')->on('clients');
             $table->string('relation_patient');
             $table->string('assistance');
             $table->string('category');

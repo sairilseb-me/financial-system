@@ -24,4 +24,8 @@ class Client extends Model
 
     protected $primaryKey = 'id';
     protected $keyType = 'string';
+
+    public function assistances(){
+       return $this->hasMany(Assistance::class); 
+    }
 }

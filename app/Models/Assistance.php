@@ -25,4 +25,8 @@ class Assistance extends Model
         'date_approved',
         'remarks',
     ];
+
+    public function client(){
+        return $this->belongsTo(Client::class);
+    }
 }
