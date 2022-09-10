@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import TheDashboard from '../components/views/TheDashboard.vue';
 import TheClients from '../components/views/TheClients.vue';
 import SpecificClient from '../components/views/SpecificClient.vue';
+import Assistance from '../components/views/Assistance.vue';
 
 const routes = [
     {
@@ -18,6 +19,12 @@ const routes = [
         path: '/clients/view',
         component: SpecificClient,
         name: 'specific-client',
+        params: true,
+    },
+    {
+        path: '/assistance/',
+        component: Assistance,
+        name: 'assistance',
         params: true,
     }
 
