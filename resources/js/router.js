@@ -3,7 +3,9 @@ import TheDashboard from '../components/views/TheDashboard.vue';
 import TheClients from '../components/views/TheClients.vue';
 import SpecificClient from '../components/views/SpecificClient.vue';
 import Assistance from '../components/views/Assistance.vue';
-
+import AddAssistance from '../components/views/AddAssistance.vue';
+import SelectPatient from '../components/views/SelectPatient.vue';
+import InputAssistance from '../components/views/InputAssistance.vue';
 const routes = [
     {
         path: '/',
@@ -26,8 +28,20 @@ const routes = [
         component: Assistance,
         name: 'assistance',
         params: true,
-    }
-
+    },
+    {
+        path: '/add-assistance/',
+        component: AddAssistance,
+        name: 'add-assistance',
+        children: [
+            {
+                path: ':clientId',
+                component: InputAssistance,
+                name: 'input-assistance',
+                params: true,
+            }
+        ]
+    },
 ];
 
 const router = createRouter({

@@ -62,7 +62,7 @@
                             <p>{{ userStore.user.barangay }} {{ userStore.user.municipality }} {{ userStore.user.province }}</p>
                             <div class="flex">
                                 <div class="row mt-1 justify-content-center">
-                                    <a href="#" class="btn btn-primary col-10">Add Assistance</a>
+                                    <router-link class="btn btn-primary col-10" :to="{name: 'add-assistance', params: {id: user.id}}">Add Assistance</router-link>
                                 </div>
                                 <div class="row mt-1 justify-content-center">
                                     <a href="#" class="btn btn-warning col-10" @click="triggerEditModal">Edit Client Data</a>
@@ -96,7 +96,7 @@
 </template>
 
 <script>
-import useUserStore from '../../js/Store/UsersStore';
+import {useUsersStore} from '../../js/Store/UsersStore';
 
 import {useRouter, useRoute } from 'vue-router';
 import { onMounted, onBeforeMount, onUpdated, ref } from 'vue';
@@ -106,7 +106,7 @@ export default {
         'modal': Modal,
     },  
     setup() {
-        let userStore = useUserStore();
+        let userStore = useUsersStore();
         const router = useRouter();
         const route = useRoute();
         const isEditUser = ref(false);
@@ -137,9 +137,6 @@ export default {
             triggerEditModal,
         }
     },
-
-   
-
     
 }
 </script>
