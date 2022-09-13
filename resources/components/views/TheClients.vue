@@ -116,7 +116,7 @@
 import TheModal from '../modal/TheModal.vue';
 import ThePagination from '../UI/ThePagination.vue';
 import {computed, onBeforeMount , ref, watch} from 'vue';
-import useUsersStore from '../../js/Store/UsersStore';
+import {useUsersStore} from '../../js/Store/UsersStore';
 export default {
     components: {
         'the-modal': TheModal,

@@ -10,7 +10,6 @@
 </template>
 
 <script>
-import useUserStore from '../../js/Store/UsersStore';
 import { ref, computed } from 'vue';
 export default {
    
