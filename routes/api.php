@@ -25,3 +25,8 @@ Route::controller(ClientsController::class)->group(function(){
     Route::get('/clients/search/{lastname}', [ClientsController::class, 'show']);
     Route::get('/clients/view/{id}', [ClientsController::class, 'edit']);
 });
+
+Route::controller(ClientsController::class)->group(function(){
+    Route::get('/assistance', [ClientsController::class, 'index']);
+    Route::post('assistance/add', [ClientController::class, 'create']);
+});
