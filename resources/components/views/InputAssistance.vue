@@ -31,7 +31,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <form class="border bg-white p-3 rounded flex">
+                    <div class="border bg-white p-3 rounded flex">
                         <div class="row">
                             <div class="mb-3 col-md-6">
                                 <div class="mb-3">
@@ -49,30 +49,30 @@
                                     </select>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="relationPatient" class="form-lab">Relation of Client to Patient:</label>
-                                    <input type="text" class="form-control">
+                                    <label for="relationPatient" class="form-label">Relation of Client to Patient:</label>
+                                    <input type="text" class="form-control" v-model="assistance.relation_patient">
                                 </div>
                                 <div class="mb-3">
                                     <label for="amount" class="form-label">Amount:</label>
-                                    <input type="number" name="" id="amount" class="form-control">
+                                    <input type="number" name="" id="amount" class="form-control" @mouseleave="convertDataToDecimal" v-model="assistance.amount">
                                 </div>
                                 <div class="mb-3">
                                     <label for="hospital" class="form-label">Hospital</label>
-                                    <input type="text" name="" id="hospital" class="form-control">
+                                    <input type="text" name="" id="hospital" class="form-control" v-model="assistance.hospital">
                                 </div>
                                 <div class="mb-3">
                                     <label for="hospitalAddress" class="form-label">Hospital Address</label>
-                                    <textarea name="" id="hospitalAddress" class="form-control" cols="30" rows="3"></textarea>
+                                    <textarea name="" id="hospitalAddress" class="form-control" cols="30" rows="3" v-model="assistance.hospital_address"></textarea>
                                 </div>
                             </div>
                             <div class="mb-3 col-md-6">
                                 <div class="mb-3">
                                     <label for="doctorsName" class="form-label">Doctor's Name:</label>
-                                    <input type="text" name="" id="doctorsName" class="form-control">
+                                    <input type="text" name="" id="doctorsName" class="form-control" v-model="assistance.doctors_name">
                                 </div>
                                 <div class="mb-3">
                                     <label for="diagnosis" class="form-label">Diagnosis:</label>
-                                    <input type="text" name="" id="diagnosis" class="form-control">
+                                    <input type="text" name="" id="diagnosis" class="form-control" v-model="assistance.diagnosis">
                                 </div>
                                 <div class="mb-3">
                                     <label for="dateRequested" class="form-label">Date Requested:</label>
@@ -80,15 +80,15 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="remarks" class="form-label">Remarks:</label>
-                                    <textarea name="" id="remarks" cols="30" rows="3" class="form-control"></textarea>
+                                    <textarea name="" id="remarks" cols="30" rows="3" class="form-control" v-model="assistance.remarks"></textarea>
                                 </div>
                                 <div class="col-md-6 justify-content-end">
                                     <button class="btn btn-secondary me-2" @click="goBackToHome">Close</button>
-                                    <button class="btn btn-primary">Submit</button>
+                                    <button class="btn btn-primary" @click="submitAssistance">Submit</button>
                                 </div>
                             </div> 
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -97,7 +97,7 @@
 
 <script>
 import { useAssistanceStore } from '../../js/Store/AssistanceStore';
-import { onMounted, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
 export default {
@@ -108,12 +108,37 @@ export default {
         const assistanceSelected = ref('null');
         const categorySelected = ref('null');
         const router = useRouter();
+        const assistanceInputData = ref({});
+
+        const assistance = reactive({
+            assistance: '',
+            category: '',
+            relation_patient: '',
+            amount: 0,
+            hospital: '',
+            hospital_address: '',
+            doctors_name: '',
+            diagnosis: '',
+            date_time_requested: '',
+            remarks: '',
+        })
+
+        let convertDataToDecimal = () => {
+            assistance.amount = Number.parseFloat(assistance.amount).toFixed(2);
+        }
+        
+        let submitAssistance = () => {
+            assistance.assistance = assistanceSelected.value.value;
+            assistance.category = categorySelected.value.value;
+            console.log(assistance);
+        }
+
         const selectedAssistance = () => {
-            
+            assistanceInputData.value.assistance = assistanceSelected.value.value;
         }
 
         const selectedCategory = () => {
-            console.log(categorySelected.value.value);
+            assistanceInputData.value.category = categorySelected.value.value;
         }
 
         let assistanceType = [
@@ -147,9 +172,12 @@ export default {
             assistanceSelected,
             categoryType,
             categorySelected,
+            assistance,
             selectedAssistance,
             selectedCategory,
             goBackToHome,
+            convertDataToDecimal,
+            submitAssistance,
         }
     },
 
