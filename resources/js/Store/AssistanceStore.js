@@ -33,6 +33,15 @@ export const useAssistanceStore = defineStore('assistance', {
             .then(({data})=>{
                 this.patient = data.client;
             })
+        },
+
+        addAssistance(payload){
+            axios.post(`http://127.0.0.1:8000/api/assistance/add`, payload)
+            .then((response)=>{
+                console.log(response);
+            }).catch((err)=>{
+                console.log(err);
+            })
         }
 
         // SET_PATIENT_CLIENT_DATA(client_id, patient_id){

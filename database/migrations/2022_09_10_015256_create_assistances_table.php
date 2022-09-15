@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('doctor_name');
             $table->text('diagnosis');
             $table->dateTime('date_time_requested');
-            $table->dateTime('date_approved');
+            $table->dateTime('date_approved')->nullable();
             $table->text('remarks');
             $table->timestamps();
             $table->softDeletes();
