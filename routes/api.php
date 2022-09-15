@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AssistanceController;
 use App\Http\Controllers\ClientsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -26,7 +27,7 @@ Route::controller(ClientsController::class)->group(function(){
     Route::get('/clients/view/{id}', [ClientsController::class, 'edit']);
 });
 
-Route::controller(ClientsController::class)->group(function(){
-    Route::get('/assistance', [ClientsController::class, 'index']);
-    Route::post('assistance/add', [ClientController::class, 'create']);
+Route::controller(AssistanceController::class)->group(function(){
+    Route::get('/assistance', [AssistanceController::class, 'index']);
+    Route::post('assistance/add', [AssistanceController::class, 'create']);
 });

@@ -1,5 +1,16 @@
 <template>
     <div class="container">
+        <the-modal v-if="isSuccess">
+            <template v-slot:header>
+                Success!
+            </template>
+            <template v-slot:body>
+                Successfully created an Assistance
+            </template>
+            <template v-slot:footer>
+                <button class="btn btn-primary" @click="triggerIsSuccess">Ok</button>
+            </template>
+        </the-modal>
         <div class="flex">
             <div class="row mb-3">
                 <div class="col-md-6">
@@ -30,6 +41,9 @@
                 </div>
             </div>
             <div class="row">
+                <div v-if="hasError" class="alert alert-danger" role="alert">
+                    Error!! Please check the data first.
+                </div>
                 <div class="col-md-12">
                     <div class="border bg-white p-3 rounded flex">
                         <div class="row">
@@ -54,7 +68,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="amount" class="form-label">Amount:</label>
-                                    <input type="number" name="" id="amount" class="form-control" @mouseleave="convertDataToDecimal" v-model="assistance.amount">
+                                    <input type="number" name="" id="amount" class="form-control" @focusout="convertDataToDecimal" v-model="assistance.amount">
                                 </div>
                                 <div class="mb-3">
                                     <label for="hospital" class="form-label">Hospital</label>
@@ -68,7 +82,7 @@
                             <div class="mb-3 col-md-6">
                                 <div class="mb-3">
                                     <label for="doctorsName" class="form-label">Doctor's Name:</label>
-                                    <input type="text" name="" id="doctorsName" class="form-control" v-model="assistance.doctors_name">
+                                    <input type="text" name="" id="doctorsName" class="form-control" v-model="assistance.doctor_name">
                                 </div>
                                 <div class="mb-3">
                                     <label for="diagnosis" class="form-label">Diagnosis:</label>
@@ -76,7 +90,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="dateRequested" class="form-label">Date Requested:</label>
-                                    <input type="date" name="" id="dateRequested" class="form-control">
+                                    <input type="date" name="" id="dateRequested" class="form-control" v-model="assistance.date_time_requested">
                                 </div>
                                 <div class="mb-3">
                                     <label for="remarks" class="form-label">Remarks:</label>
@@ -100,7 +114,11 @@ import { useAssistanceStore } from '../../js/Store/AssistanceStore';
 import { onMounted, reactive, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
+import TheModal  from '../modal/TheModal.vue';
 export default {
+    components: {
+        'the-modal': TheModal,
+    },
     setup() {
         
         let assistStore = useAssistanceStore();
@@ -109,19 +127,35 @@ export default {
         const categorySelected = ref('null');
         const router = useRouter();
         const assistanceInputData = ref({});
+        const isSuccess = ref(false);
+        const hasError = ref(false);
+        let {assistanceData} = storeToRefs(assistStore);
 
         const assistance = reactive({
+            client_id: assistStore.assistanceData.client_id,
+            patient_id: assistStore.assistanceData.patient_id,
             assistance: '',
             category: '',
             relation_patient: '',
             amount: 0,
             hospital: '',
             hospital_address: '',
-            doctors_name: '',
+            doctor_name: '',
             diagnosis: '',
             date_time_requested: '',
             remarks: '',
         })
+
+        let triggerIsSuccess = () => {
+            isSuccess.value = false
+        }
+
+        let triggerIsError = () => {
+            hasError.value = true;
+            setTimeout(()=>{
+                hasError.value = false
+            }, 5000);
+        }
 
         let convertDataToDecimal = () => {
             assistance.amount = Number.parseFloat(assistance.amount).toFixed(2);
@@ -130,7 +164,9 @@ export default {
         let submitAssistance = () => {
             assistance.assistance = assistanceSelected.value.value;
             assistance.category = categorySelected.value.value;
-            console.log(assistance);
+            assistance.client_id = assistanceData.client_id;
+            assistance.patient_id = assistanceData.patient_id;
+            assistStore.addAssistance(assistance)
         }
 
         const selectedAssistance = () => {
@@ -140,6 +176,10 @@ export default {
         const selectedCategory = () => {
             assistanceInputData.value.category = categorySelected.value.value;
         }
+
+        onMounted(()=>{
+            console.log(assistanceData);
+        })
 
         let assistanceType = [
             'Hospital Bill',
@@ -174,10 +214,14 @@ export default {
             categorySelected,
             assistance,
             selectedAssistance,
+            isSuccess,
             selectedCategory,
             goBackToHome,
             convertDataToDecimal,
             submitAssistance,
+            triggerIsSuccess,
+            triggerIsError,
+            hasError,
         }
     },
 
