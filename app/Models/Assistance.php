@@ -29,4 +29,8 @@ class Assistance extends Model
     public function client(){
         return $this->belongsTo(Client::class);
     }
+
+    public function patient(){
+        return $this->belongsTo(Client::class, 'patient_id');
+    }
 }

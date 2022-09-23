@@ -61,7 +61,9 @@ class ClientsController extends Controller
     }
 
     public function edit($id){
-        $client = Client::where('id', $id)->first();
+        $client = Client::where('id', $id)->with(['assistances' => function($q){
+            $q->with('patient');
+        }])->first();
         if($client) return response()->json(['status'=>'success','client'=>$client]);
         return response()->json(['status'=>'failed', 'message'=>'Failed to find client data.']);
     }

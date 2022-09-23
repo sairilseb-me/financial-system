@@ -32,10 +32,8 @@ export const useUsersStore = defineStore('usersStore', {
                     this.isLoading = true
                     axios.get(`http://127.0.0.1:8000/api/clients/search/${payload}`)
                     .then(({data})=>{
-                       
                         this.users = data.data;
                         this.pagination = data.data;
-                        
                     }).finally(()=>{
                         this.isLoading = false
                     })
