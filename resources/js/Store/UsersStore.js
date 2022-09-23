@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {defineStore} from 'pinia';
+import router from '../router.js';
 
 export const useUsersStore = defineStore('usersStore', {
     id: 'user',
@@ -55,7 +56,15 @@ export const useUsersStore = defineStore('usersStore', {
                 })
             },
             deleteClient(id){
-                
+                axios.delete(`http://127.0.0.1:8000/api/clients/delete/${id}`)
+                .then((response)=>{
+                    if(response.data.status === 'success'){
+                        this.loadUsers();
+                        router.push('/clients');
+                    }
+                }).catch((err)=>{
+                    console.log(err);
+                })
             }
         }
 });

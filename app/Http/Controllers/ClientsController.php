@@ -94,4 +94,10 @@ class ClientsController extends Controller
         if($client) return response()->json(['status'=>'success', 'message'=>'Successfully updated a client data.']);
         return response()->json(['status'=>'failed', 'message'=>'Failed to updated client']);
     }
+
+    public function destroy($id){
+        $client = Client::find($id)->delete();
+        if($client) return response()->json(['status'=>'success', 'message'=>'Successfully deleted a client.']);
+        return response()->json(['status'=>'failed', 'message'=>'Failed to delete a client.']);
+    }
 }
