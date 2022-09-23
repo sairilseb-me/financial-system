@@ -41,11 +41,14 @@
                         <input type="text" name="" id="dateOfBirth" class="form-control" v-model="user.province">
                     </div>
                 </template>
+                
                 <template v-slot:footer>
                     <button type="button" class="btn btn-secondary" @click="triggerEditModal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary" @click="updateClient">Save changes</button>
                 </template>
-
+                <div v-if="hasError" class="alert alert-danger" role="alert">
+                    There was an error. Please check data.
+                </div>
             </modal>
             <div v-if="!userStore.user">
                 <div class="flex justify-content-center">
@@ -110,6 +113,7 @@ import {useRouter, useRoute } from 'vue-router';
 import { onMounted, onBeforeMount, onUpdated, ref } from 'vue';
 import Modal from '../modal/TheModal.vue';
 import moment from 'moment';
+import { storeToRefs } from 'pinia';
 export default {
     components: {
         'modal': Modal,
@@ -120,6 +124,8 @@ export default {
         const route = useRoute();
         const isEditUser = ref(false);
         const user = ref({});
+        let client_id = route.params.id;
+        const {hasError} = storeToRefs(useRoute);
 
         let loadUserData = () =>{
             axios.get(`http://127.0.0.1:8000/api/clients/view/${route.params.id}`)
@@ -127,9 +133,16 @@ export default {
                 if(response.data.status === 'success'){
                     userStore.user = response.data.client;
                     user.value = userStore.user;
-                    console.log(userStore.user);
                 }
             })
+        }
+
+        let updateClient = () => {
+            userStore.updateClient(client_id, user.value);
+            if(!hasError){
+                triggerEditModal();
+            }
+            loadUserData();
         }
 
         let triggerEditModal = () =>{
@@ -147,9 +160,11 @@ export default {
             userStore, 
             isEditUser,
             user,
+            hasError,
             loadUserData,
             triggerEditModal,
             convertTime,
+            updateClient,
         }
     },
     
