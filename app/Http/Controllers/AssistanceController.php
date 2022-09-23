@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class AssistanceController extends Controller
 {
     public function index(){
-        return Assistance::paginate(5);
+        return Assistance::with('patient')->with('client')->get();
     }
 
     public function create(Request $request){
@@ -44,5 +44,9 @@ class AssistanceController extends Controller
 
         if(!$assistance) return response()->json(['status'=> 'Failed', 'Failed to create an Assistance data.']);
         return response()->json(['status' => 'Success', 'Successfully create an Assistance Data']);
+    }
+
+    public function showWithPatient($id){
+        
     }
 }

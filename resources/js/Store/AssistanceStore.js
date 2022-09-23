@@ -8,7 +8,9 @@ export const useAssistanceStore = defineStore('assistance', {
             patients: [],
             patient: {},
             client: {},
+            isSuccess: false,
             assistanceData: {},
+            assistances: [],
         }
     },
     actions: {
@@ -38,9 +40,18 @@ export const useAssistanceStore = defineStore('assistance', {
         addAssistance(payload){
             axios.post(`http://127.0.0.1:8000/api/assistance/add`, payload)
             .then((response)=>{
-                console.log(response);
+                if(response.data.status === 'Success'){
+                    this.isSuccess = true;
+                }
             }).catch((err)=>{
                 console.log(err);
+            })
+        },
+        loadAssistance(){
+            axios.get(`http://127.0.0.1:8000/api/assistance`)
+            .then((response)=>{
+                this.assistances = response.data;
+                console.log(this.assistances);
             })
         }
 

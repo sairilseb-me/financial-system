@@ -12,7 +12,7 @@
                     <input type="text" class="form-control bg-white" placeholder="Enter Patient Lastname...">
                 </div>
             </div>
-            <div class="row mt-3">
+            <div v-if="assistStore.assistances" class="row mt-3">
                 <div class="col-md-12">
                     <table class="table table-striped">
                         <thead>
@@ -24,9 +24,51 @@
                                 <th>Details</th>
                             </tr>
                         </thead>
+                        <tbody>
+                            <tr v-for="assistance in assistStore.assistances" :key="assistance.id">
+                               <td>{{ assistance.patient.first_name }} {{ assistance.patient.middle_name }} {{ assistance.patient.last_name }}</td>
+                               <td>{{ assistance.assistance }}</td>
+                               <td>{{ changeTimeFormat(assistance.date_time_requested) }}</td>
+                               <td>{{ assistance.client.first_name }} {{ assistance.client.middle_name }} {{ assistance.client.last_name }}</td>
+                               <td><button class="btn btn-warning">Edit</button> <button class="btn btn-danger">Delete</button></td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
 </template>
+
+<script>
+
+import { useAssistanceStore } from '../../js/Store/AssistanceStore';
+import { onMounted, computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import moment from 'moment';
+export default {
+    setup() {
+        
+        let assistStore = useAssistanceStore();
+
+        const loadAssistance = () =>{
+            assistStore.loadAssistance();
+        }
+
+        onMounted(()=>{
+            loadAssistance();;
+        })
+
+        let changeTimeFormat = (value) => {
+            return moment(value).format('MMM Do YYYY');
+        };
+
+        return{
+            assistStore,
+            loadAssistance,
+            changeTimeFormat,
+        }
+    },
+
+}
+</script>

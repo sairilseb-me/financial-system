@@ -8,7 +8,7 @@
                 Successfully created an Assistance
             </template>
             <template v-slot:footer>
-                <button class="btn btn-primary" @click="triggerIsSuccess">Ok</button>
+                <button class="btn btn-secondary" @click="triggerIsSuccess">Close</button>
             </template>
         </the-modal>
         <div class="flex">
@@ -122,14 +122,12 @@ export default {
     setup() {
         
         let assistStore = useAssistanceStore();
-        let { patient, client } = storeToRefs(assistStore);
+        let { patient, client, isSuccess, assistanceData } = storeToRefs(assistStore);
         const assistanceSelected = ref('null');
         const categorySelected = ref('null');
         const router = useRouter();
         const assistanceInputData = ref({});
-        const isSuccess = ref(false);
         const hasError = ref(false);
-        let {assistanceData} = storeToRefs(assistStore);
 
         const assistance = reactive({
             client_id: assistStore.assistanceData.client_id,
@@ -147,7 +145,8 @@ export default {
         })
 
         let triggerIsSuccess = () => {
-            isSuccess.value = false
+            isSuccess.value = false;
+            router.push('/assistance');
         }
 
         let triggerIsError = () => {
@@ -177,10 +176,6 @@ export default {
             assistanceInputData.value.category = categorySelected.value.value;
         }
 
-        onMounted(()=>{
-            console.log(assistanceData);
-        })
-
         let assistanceType = [
             'Hospital Bill',
             'Medical Bill',
@@ -195,8 +190,29 @@ export default {
         ];
 
         let categoryType = [
+            'Women',
+            'MEN',
+            'Children',
+            'Youth',
+            'PWD',
+            'Senior Citizen',
+            'Pantawid',
+            'Indigenous People',
+            'Disaster Victim',
+            'Solo Parent',
             'ERPAT',
+            'OFW',
+            'CAR',
+            'CICL',
+            'PLHIV',
+            'Abused Women',
+            'Abused Men',
+            'Suicide Case',
+            'Drug Surrenderees',
+            'Rebel Surrenderees',
+            'Detainees',
             'Single Mother',
+
         ];
 
         let goBackToHome = () => {
@@ -208,6 +224,7 @@ export default {
             assistStore,
             patient,
             client,
+            isSuccess,
             assistanceType,
             assistanceSelected,
             categoryType,

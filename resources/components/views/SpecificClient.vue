@@ -88,6 +88,14 @@
                                 <th>Assistance Details</th>
                             </tr>
                     </thead>
+                    <tbody>
+                        <tr v-for="assistance in userStore.user.assistances" :key="assistance.id">
+                            <td>{{ assistance.assistance }}</td>
+                            <td>{{ assistance.patient.first_name }} {{ assistance.patient.middle_name }} {{ assistance.patient.last_name }}</td>
+                            <td>{{ convertTime(assistance.date_time_requested) }}</td>
+                            <td><button class="btn btn-secondary">View Details</button></td>
+                        </tr>
+                    </tbody>
                     </table>
                 </div>
             </div>
@@ -101,6 +109,7 @@ import {useUsersStore} from '../../js/Store/UsersStore';
 import {useRouter, useRoute } from 'vue-router';
 import { onMounted, onBeforeMount, onUpdated, ref } from 'vue';
 import Modal from '../modal/TheModal.vue';
+import moment from 'moment';
 export default {
     components: {
         'modal': Modal,
@@ -118,12 +127,17 @@ export default {
                 if(response.data.status === 'success'){
                     userStore.user = response.data.client;
                     user.value = userStore.user;
+                    console.log(userStore.user);
                 }
             })
         }
 
         let triggerEditModal = () =>{
             isEditUser.value = !isEditUser.value;
+        }
+
+        let convertTime = (value) => {
+            return moment(value).format('MMM Do YYYY');
         }
 
         onBeforeMount(()=>{
@@ -135,6 +149,7 @@ export default {
             user,
             loadUserData,
             triggerEditModal,
+            convertTime,
         }
     },
     
