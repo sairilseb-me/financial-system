@@ -1,6 +1,18 @@
 <template>
     <div class="container flex mt-3">
         <div>
+            <modal v-if="isDeleteUser">
+                <template v-slot:header>
+                    <h4>Delete User</h4>
+                </template>
+                <template v-slot:body>
+                    <p>Do you want to delete the user?</p>
+                </template>
+                <template v-slot:footer>
+                    <button class="btn btn-secondary" @click="triggerDeleteModal">Close</button>
+                    <button class="btn btn-danger" @click="deleteClient">Delete</button>
+                </template>
+            </modal>
             <modal v-if="isEditUser">
                 <template v-slot:header>
                     <h4>Edit Client</h4>
@@ -71,7 +83,7 @@
                                     <a href="#" class="btn btn-warning col-10" @click="triggerEditModal">Edit Client Data</a>
                                 </div>
                                 <div class="row mt-1 justify-content-center">
-                                    <a href="#" class="btn btn-danger col-10">Delete Client Data</a>
+                                    <a href="#" class="btn btn-danger col-10" @click="triggerDeleteModal">Delete Client Data</a>
                                 </div>
                             </div>
                             
@@ -123,6 +135,7 @@ export default {
         const router = useRouter();
         const route = useRoute();
         const isEditUser = ref(false);
+        const isDeleteUser = ref(false);
         const user = ref({});
         let client_id = route.params.id;
         const {hasError} = storeToRefs(useRoute);
@@ -145,8 +158,16 @@ export default {
             loadUserData();
         }
 
+        let deleteClient = () => {
+            userStore.deleteClient(client_id);
+        }
+
         let triggerEditModal = () =>{
             isEditUser.value = !isEditUser.value;
+        }
+
+        let triggerDeleteModal = () => {
+            isDeleteUser.value = !isDeleteUser.value;
         }
 
         let convertTime = (value) => {
@@ -159,12 +180,15 @@ export default {
         return {
             userStore, 
             isEditUser,
+            isDeleteUser,
             user,
             hasError,
             loadUserData,
             triggerEditModal,
+            triggerDeleteModal,
             convertTime,
             updateClient,
+            deleteClient,
         }
     },
     
