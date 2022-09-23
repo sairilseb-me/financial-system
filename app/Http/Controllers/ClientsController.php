@@ -67,4 +67,31 @@ class ClientsController extends Controller
         if($client) return response()->json(['status'=>'success','client'=>$client]);
         return response()->json(['status'=>'failed', 'message'=>'Failed to find client data.']);
     }
+
+    public function update(Request $request, $id){
+
+        $request->validate([
+            'first_name' => 'required|string',
+            'middle_name' => 'required|string',
+            'last_name' => 'required|string',
+            'date_of_birth' => 'required|date',
+            'gender' => 'required|string',
+            'barangay' => 'required|string',
+            'municipality' => 'required|string',
+            'province' => 'required|string'
+        ]);
+
+        $client = Client::where('id', $id)->update([
+            'first_name' => $request->first_name,
+            'middle_name' => $request->middle_name,
+            'last_name' => $request->last_name,
+            'date_of_birth' => $request->date_of_birth,
+            'gender' => $request->gender,
+            'barangay' => $request->barangay,
+            'municipality' => $request->municipality,
+            'province' => $request->province,
+        ]);
+        if($client) return response()->json(['status'=>'success', 'message'=>'Successfully updated a client data.']);
+        return response()->json(['status'=>'failed', 'message'=>'Failed to updated client']);
+    }
 }

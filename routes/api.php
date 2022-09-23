@@ -25,6 +25,8 @@ Route::controller(ClientsController::class)->group(function(){
     Route::post('/clients/add', [ClientsController::class, 'create']);
     Route::get('/clients/search/{lastname}', [ClientsController::class, 'show']);
     Route::get('/clients/view/{id}', [ClientsController::class, 'edit']);
+    Route::post('/clients/update/{id}', [ClientsController::class, 'update']);
+    Route::delete('clients/delete/{id}', [ClientsController::class, 'destroy']);
 });
 
 Route::controller(AssistanceController::class)->group(function(){

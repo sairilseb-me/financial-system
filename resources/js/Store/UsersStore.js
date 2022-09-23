@@ -9,6 +9,8 @@ export const useUsersStore = defineStore('usersStore', {
             user: {},
             isLoading: false,
             pagination: {},
+            hasError: false,
+            errorMessage: '',
          })
     },
     getters: {
@@ -41,6 +43,20 @@ export const useUsersStore = defineStore('usersStore', {
                     this.loadUsers();
                 }
             },
+            updateClient(id, payload){
+                axios.post(`http://127.0.0.1:8000/api/clients/update/${id}`, payload)
+                .then((response)=>{
+                    this.loadUsers();
+                }).catch((err)=>{
+                    this.hasError = true;
+                    setTimeout(() => {
+                        this.hasError = false;
+                    }, 5000);
+                })
+            },
+            deleteClient(id){
+                
+            }
         }
 });
 
