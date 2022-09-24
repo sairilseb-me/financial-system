@@ -16,7 +16,7 @@
 <style scoped>
     .bg-color{
         background-color: white;
-        height: 100%;
+        height: 100vh;
     }
 
     a{

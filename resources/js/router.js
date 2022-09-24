@@ -6,11 +6,17 @@ import Assistance from '../components/views/Assistance.vue';
 import AddAssistance from '../components/views/AddAssistance.vue';
 import SelectPatient from '../components/views/SelectPatient.vue';
 import InputAssistance from '../components/views/InputAssistance.vue';
+import Login from '../components/views/Login.vue'
 const routes = [
     {
         path: '/',
         component: TheDashboard,
         name: 'dashboard'
+    },
+    {
+        path: '/login',
+        component: Login,
+        name: "login"
     },
     {
         path: '/clients',
