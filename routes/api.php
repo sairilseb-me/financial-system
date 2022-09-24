@@ -32,4 +32,5 @@ Route::controller(ClientsController::class)->group(function(){
 Route::controller(AssistanceController::class)->group(function(){
     Route::get('/assistance', [AssistanceController::class, 'index']);
     Route::post('assistance/add', [AssistanceController::class, 'create']);
+    Route::get('/assistance/get-charts-data/{from}/{to}', [AssistanceController::class, 'getDataBetweenDates']);
 });

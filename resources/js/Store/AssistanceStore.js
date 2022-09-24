@@ -51,7 +51,6 @@ export const useAssistanceStore = defineStore('assistance', {
             axios.get(`http://127.0.0.1:8000/api/assistance`)
             .then((response)=>{
                 this.assistances = response.data;
-                console.log(this.assistances);
             })
         }
 

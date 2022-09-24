@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Assistance;
+use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\File\Exception\UnexpectedTypeException;
+use UnexpectedValueException;
 
 class AssistanceController extends Controller
 {
@@ -46,7 +50,19 @@ class AssistanceController extends Controller
         return response()->json(['status' => 'Success', 'Successfully create an Assistance Data']);
     }
 
-    public function showWithPatient($id){
-        
+    public function getDataBetweenDates($from, $to){
+
+        // return gettype($from);
+        // $newFrom = DateTime::createFromFormat("Y-m-d", $from);
+        // if(!$newFrom){
+        //     throw new UnexpectedValueException("Could not parse the date: $newFrom");
+        // }
+        // $newFrom->format('Y-m-d');
+        // return $newFrom;
+        $assistanceDates = Assistance::selectRaw('count(assistance) as number_of_assistance, MonthName(date_time_requested)')
+        ->groupBy('date_time_requested')
+        ->get();
+        return $assistanceDates;
     }
+
 }
