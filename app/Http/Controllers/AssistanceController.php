@@ -52,17 +52,17 @@ class AssistanceController extends Controller
 
     public function getDataBetweenDates($from, $to){
 
-        // return gettype($from);
-        // $newFrom = DateTime::createFromFormat("Y-m-d", $from);
-        // if(!$newFrom){
-        //     throw new UnexpectedValueException("Could not parse the date: $newFrom");
-        // }
-        // $newFrom->format('Y-m-d');
-        // return $newFrom;
-        $assistanceDates = Assistance::selectRaw('count(assistance) as number_of_assistance, MonthName(date_time_requested)')
-        ->groupBy('date_time_requested')
+        $assistanceDates = Assistance::selectRaw('count(assistance) as number_of_assistance, MonthName(date_time_requested) as Month_Name')
+        ->whereBetween('date_time_requested', [$from, $to])
+        ->groupBy('Month_Name')
         ->get();
-        return $assistanceDates;
+        
+        if($assistanceDates) return response()->json(['status'=>'success', 'assistanceDates'=>$assistanceDates]);
+        return response()->json(['status'=>'failed', 'message'=>'Cannot load data.' ]);
+    }
+
+    public function show($id){
+        return Assistance::where('id', '=', $id)->with('patient')->with('client')->first();
     }
 
 }

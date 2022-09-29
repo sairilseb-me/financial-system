@@ -23,10 +23,10 @@
             </div>
         </div>
         <div class="row mt-4 justify-content-end">
-            <div class="col-md-6 d-flex justify-content-end">
-                <input type="date" name="" id="" class="me-2 form-control">
+            <div class="col-md-6 d-flex me-2 justify-content-end">
+                <input type="date" name="" id="" class="me-2 form-control" v-model="fromDate" @change="loadAssistanceData">
                 <label for="" style="padding-top: 5px;">To</label>
-                <input type="date" name="" id="" class="ms-2 form-control">
+                <input type="date" name="" id="" class="ms-2 form-control" v-model="toDate" @change="loadAssistanceData">
             </div>
         </div>
         <div class="flex">
@@ -57,27 +57,34 @@ import { onMounted } from 'vue';
 import DataCards from '../UI/DataCards.vue';
 import Charts from '../UI/Charts.vue';
 import {ref} from 'vue';
+import Modal from '../modal/TheModal.vue';
 
 export default {
     components: {
         'data-cards': DataCards,
         'bar-chart': Charts,
+        'modal': Modal,
     },
     setup(){
         const assistStore = useAssistanceStore();
         const userStore = useUsersStore();
         const clientRequestedData = ref({});
         const clientApprovedData = ref({});
+        const fromDate = ref(null);
+        const toDate = ref(null);
+        const hasError = ref(false);
+        const errorMessage = ref('');
+        const totalClientRequested = ref(0);
 
         const chartOptions = {responsive: true}
 
         clientRequestedData.value = {
-            labels: [ 'January', 'February', 'March'],
+            labels: [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
             datasets: [
                 {
                     label: 'Clients who requested for Assistance',
                     backgroundColor: '#0B6FFD',
-                    data: [40, 20, 12]
+                    data: [40, 20, 12, 25, 15, 11, 28, 35, 10, 20, 16, 40]
                 }
             ]
         }
@@ -93,6 +100,33 @@ export default {
             ]
         }
 
+        const triggerErrorModal = () => {
+            hasError.value = !hasError.value;
+        }
+
+        const loadAssistanceData = () =>{
+            if(fromDate.value && toDate.value){
+                axios.get(`http://127.0.0.1:8000/api/assistance/get-charts-data/${fromDate.value}/${toDate.value}`)
+                .then((response)=>{
+                    let mapData = response.data.assistanceDates.map((item)=>{
+                        return item.number_of_assistance;
+                    })
+
+
+                    let mapLabels = response.data.assistanceDates.map((item)=>{
+                        return item.Month_Name;
+                    })
+
+                    let totalRequest = response.data.assistanceDates.map((item)=>{
+                        return item.number_of_assistance.map((i)=> {
+                            return i;
+                        })
+                    });
+                    clientRequestedData.value.datasets[0].data = mapData;
+                    clientRequestedData.value.labels = mapLabels;
+                })
+            }
+        }
         
 
         return{
@@ -101,6 +135,13 @@ export default {
             clientRequestedData,
             chartOptions,
             clientApprovedData,
+            fromDate,
+            toDate,
+            errorMessage,
+            hasError,
+            totalClientRequested,
+            loadAssistanceData,
+            triggerErrorModal,
         }
     }
     

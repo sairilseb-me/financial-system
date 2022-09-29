@@ -30,7 +30,7 @@
                                <td>{{ assistance.assistance }}</td>
                                <td>{{ changeTimeFormat(assistance.date_time_requested) }}</td>
                                <td>{{ assistance.client.first_name }} {{ assistance.client.middle_name }} {{ assistance.client.last_name }}</td>
-                               <td><button class="btn btn-warning">Edit</button> <button class="btn btn-danger">Delete</button></td>
+                               <td><button class="btn btn-secondary">View</button> <button class="btn btn-danger">Delete</button></td>
                             </tr>
                         </tbody>
                     </table>

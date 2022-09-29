@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AssistanceController;
 use App\Http\Controllers\ClientsController;
+use App\Models\Assistance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -33,4 +34,5 @@ Route::controller(AssistanceController::class)->group(function(){
     Route::get('/assistance', [AssistanceController::class, 'index']);
     Route::post('assistance/add', [AssistanceController::class, 'create']);
     Route::get('/assistance/get-charts-data/{from}/{to}', [AssistanceController::class, 'getDataBetweenDates']);
+    Route::get('/assistance/view/{id}', [AssistanceController::class, 'show']);
 });

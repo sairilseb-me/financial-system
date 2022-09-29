@@ -7,6 +7,7 @@ import AddAssistance from '../components/views/AddAssistance.vue';
 import SelectPatient from '../components/views/SelectPatient.vue';
 import InputAssistance from '../components/views/InputAssistance.vue';
 import Login from '../components/views/Login.vue'
+import AssistanceView from '../components/views/ViewAssistance.vue';
 const routes = [
     {
         path: '/',
@@ -33,6 +34,12 @@ const routes = [
         path: '/assistance/',
         component: Assistance,
         name: 'assistance',
+        params: true,
+    },
+    {
+        path: '/assistance/view',
+        component: AssistanceView,
+        name: 'view-assistance',
         params: true,
     },
     {

@@ -17,7 +17,7 @@
 <style scoped>
     .customCards{
         background: #673AB7;
-        /* border-radius: 16px; */
+        border-radius: 9px;
         color: white;
     }
     .customCardsBody{

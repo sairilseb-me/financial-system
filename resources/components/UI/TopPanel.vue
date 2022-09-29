@@ -6,7 +6,7 @@
             </div>
             <div class="flex align-items-end col-md-4 text-end">
                 <font-awesome-icon icon="fa-user"></font-awesome-icon>
-                <button class="ms-2 btn btn-outline-info btn-sm mx-2">Logout</button>
+                <button class="ms-2 btn btn-outline-primary btn-sm mx-2">Logout</button>
             </div>
         </div>
     </div>
